@@ -17,7 +17,7 @@ A robust, object-oriented Python application for managing a school database with
 
 ## Project Structure
 
-```
+
 school_management_system/
 ├── main.py
 ├── config.py
@@ -34,7 +34,7 @@ school_management_system/
     ├── __init__.py
     ├── validators.py
     └── helpers.py
-```
+
 
 ## Requirements
 
