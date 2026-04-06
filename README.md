@@ -1,21 +1,22 @@
+
 ```markdown
 # School Management System
 
-A robust, object-oriented Python application for managing a school database with full CRUD operations for Students, Teachers, Courses, and Student Enrollments.
+A robust, object-oriented Python application for managing a school database with full CRUD operations for Students, Teachers, Courses, and Student Enrollments (Registrations).
 
 ## Features
 
-- Proper OOP Design (Inheritance, Encapsulation)
-- Normalized 3NF Database with constraints (PK, FK, UNIQUE, CHECK, DEFAULT, INDEX)
-- Full CRUD for Students, Teachers, Courses, and Enrollments
-- Search (Linear Search) and Sorting (Bubble Sort) algorithms
-- Input validation and comprehensive error handling
-- Persistent menu loop until user quits
-- Follows PEP 8 standards with detailed comments
+- **Proper OOP Design**: Inheritance, Encapsulation, and Abstraction
+- **Normalized Database (3NF)**: Students, Teachers, Courses, and Enrollments with proper constraints (PK, FK, UNIQUE, CHECK, DEFAULT, INDEX)
+- **Full CRUD** operations for all entities
+- **Search & Sorting Algorithms**: Linear Search + Bubble Sort
+- **Input Validation** and comprehensive **Error Handling**
+- **Persistent Menu Loop** – program runs until user quits
+- Follows **PEP 8** standards with detailed code comments
 
 ## Project Structure
 
-```
+```text
 school_management_system/
 ├── main.py
 ├── config.py
@@ -36,55 +37,67 @@ school_management_system/
 
 ## Requirements
 
-- Python 3.8+
-- MySQL Server
+- Python 3.8 or higher
+- MariaDB / MySQL Server
 
 ### Python Dependencies
 
-```txt
-mysql-connector-python
+`requirements.txt` is already included in the repository.
+
+To install dependencies:
+
+```bash
+pip install -r requirements.txt
 ```
 
 ## Setup Instructions
 
-1. **Create the project folder structure** as shown above and place each file with the corresponding code.
-
-2. **Install the required package:**
+### 1. Clone or Download the Project
 
 ```bash
-pip install mysql-connector-python
+git clone <your-repo-url>
+cd school_management_system
 ```
 
-3. **Create `requirements.txt`** in the project root with the following content:
-
-```txt
-mysql-connector-python
-```
-
-4. **Configure Database** (optional):
-   - Open `config.py`
-   - Update `USER`, `PASSWORD`, or `HOST` if different from defaults (`root` / `C0ventryCUC` / `localhost`)
-
-5. **Run the application:**
+### 2. Install Dependencies
 
 ```bash
-python main.py
+pip install -r requirements.txt
 ```
 
-The program will automatically create the database `MY_SCHOOL_DATABASE` and all tables on first run.
+### 3. Database Configuration
 
-## Usage
+- Default credentials in `config.py`: `root` / `C0ventryCUC`
+- Make sure MariaDB/MySQL server is running:
 
-- Select options from the main menu (1-5)
-- Use sub-menus to perform CRUD operations
-- In Student Management → Option 4 demonstrates search and sorting
+```bash
+sudo systemctl start mysqld    # or mariadb on Fedora
+```
+
+- Update `config.py` only if your username, password, or host is different.
+
+### 4. Run the Application
+
+```bash
+python3 main.py
+```
+
+The application will automatically:
+- Create the database `MY_SCHOOL_DATABASE` if it doesn't exist
+- Create all required tables with proper constraints
+- Start the interactive menu
+
+## How to Use
+
+- Choose options from the main menu (1–5)
+- Navigate through sub-menus for **Students**, **Teachers**, **Courses**, and **Enrollments**
+- In **Student Management**, use option 4 to see **search** and **sorting** in action
 - Enter `5` in the main menu to exit
 
 ## Notes
 
 - All user inputs are validated
-- Database operations include proper error handling and rollback on failure
-- Referential integrity is enforced via foreign keys
+- Database changes are committed automatically on successful operations
+- Foreign key constraints ensure referential integrity
 
-Enjoy using the School Management System!
-```
+---
