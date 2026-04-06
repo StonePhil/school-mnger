@@ -1,5 +1,5 @@
 
-```markdown
+
 # School Management System
 
 A robust, object-oriented Python application for managing a school database with full CRUD operations for Students, Teachers, Courses, and Student Enrollments (Registrations).
@@ -16,7 +16,7 @@ A robust, object-oriented Python application for managing a school database with
 
 ## Project Structure
 
-
+```markdown
 school-mnger/
 ├── main.py
 ├── config.py
