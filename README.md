@@ -17,7 +17,7 @@ A robust, object-oriented Python application for managing a school database with
 ## Project Structure
 
 
-school_management_system/
+school-mnger/
 ├── main.py
 ├── config.py
 ├── database/
@@ -55,7 +55,7 @@ pip install -r requirements.txt
 ### 1. Clone or Download the Project
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/StonePhil/school-mnger
 cd school_management_system
 ```
 
