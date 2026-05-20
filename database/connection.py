@@ -1,3 +1,8 @@
+# database/connection.py
+"""
+Database connection and table management with error handling.
+"""
+
 import mysql.connector
 from mysql.connector import errorcode
 import sys
@@ -5,7 +10,7 @@ from config import DB_NAME, USER, PASSWORD, HOST
 
 
 class DBConnection:
-    #encapsulates mysql connection and provides safe query execution
+    """Encapsulates MySQL connection and provides safe query execution."""
 
     def __init__(self):
         self.connection = None
@@ -13,7 +18,7 @@ class DBConnection:
         self.connect()
 
     def connect(self):
-        #establish connection and ensure database+tables exist
+        """Establish connection and ensure database + tables exist."""
         try:
             self.connection = mysql.connector.connect(
                 user=USER, password=PASSWORD, host=HOST
@@ -42,7 +47,7 @@ class DBConnection:
                 raise
 
     def _create_tables(self):
-        #creates normalized 3nf tables with proper constraints
+        """Creates all tables including the new Users table for authentication."""
         tables = [
             # Teachers
             """
@@ -86,16 +91,42 @@ class DBConnection:
                 FOREIGN KEY (CourseID) REFERENCES Courses(CourseID) ON DELETE CASCADE,
                 UNIQUE KEY unique_enrollment (StudentID, CourseID)
             )
+            """,
+            # NEW: Users table for Login & Authorization
+            """
+            CREATE TABLE IF NOT EXISTS Users (
+                UserID INT PRIMARY KEY AUTO_INCREMENT,
+                Username VARCHAR(50) UNIQUE NOT NULL,
+                PasswordHash VARCHAR(255) NOT NULL,
+                Role ENUM('Admin', 'Teacher') NOT NULL DEFAULT 'Teacher',
+                CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
             """
         ]
 
         for sql in tables:
             self.cursor.execute(sql)
         self.connection.commit()
-        print("All tables created successfully (3NF normalized database).")
+
+        # Auto-create default Admin account
+        self._create_default_admin()
+        print("✅ All tables created successfully (including Users table).")
+
+    def _create_default_admin(self):
+        """Creates default admin account if no users exist."""
+        self.cursor.execute("SELECT COUNT(*) FROM Users")
+        if self.cursor.fetchone()[0] == 0:
+            import bcrypt
+            hashed = bcrypt.hashpw("admin123".encode('utf-8'), bcrypt.gensalt())
+            self.cursor.execute(
+                "INSERT INTO Users (Username, PasswordHash, Role) VALUES (%s, %s, 'Admin')",
+                ("admin", hashed)
+            )
+            self.connection.commit()
+            print("✅ Default admin account created → Username: admin | Password: admin123")
 
     def execute_query(self, query: str, params: tuple = None):
-        #execute query with parameters and commit
+        """Execute query with parameters and commit."""
         try:
             self.cursor.execute(query, params or ())
             self.connection.commit()
@@ -105,7 +136,7 @@ class DBConnection:
             raise
 
     def fetch_all(self, query: str, params: tuple = None):
-        #fetch all results safely
+        """Fetch all results safely."""
         try:
             self.cursor.execute(query, params or ())
             return self.cursor.fetchall()
