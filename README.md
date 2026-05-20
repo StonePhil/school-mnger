@@ -1,25 +1,26 @@
-
-
+```markdown
 # School Management System
 
-A robust, object-oriented Python application for managing a school database with full CRUD operations for Students, Teachers, Courses, and Student Enrollments (Registrations).
+A robust, object-oriented Python application for managing a school database with full CRUD operations, secure login, and role-based authorization.
 
 ## Features
 
-- **Proper OOP Design**: Inheritance, Encapsulation, and Abstraction
-- **Normalized Database (3NF)**: Students, Teachers, Courses, and Enrollments with proper constraints (PK, FK, UNIQUE, CHECK, DEFAULT, INDEX)
-- **Full CRUD** operations for all entities
-- **Search & Sorting Algorithms**: Linear Search + Bubble Sort
-- **Input Validation** and comprehensive **Error Handling**
-- **Persistent Menu Loop** – program runs until user quits
-- Follows **PEP 8** standards with detailed code comments
+- **Secure Login System** with Authentication (bcrypt hashing)
+- **Role-based Authorization** (Admin & Teacher roles)
+- Proper OOP Design (Inheritance, Encapsulation)
+- Normalized 3NF Database with constraints (PK, FK, UNIQUE, CHECK, DEFAULT, INDEX)
+- Full CRUD for Students, Teachers, Courses, and Enrollments
+- Search (Linear Search) and Sorting (Bubble Sort) algorithms
+- Input validation and comprehensive error handling
+- Follows PEP 8 standards with detailed comments
 
 ## Project Structure
 
-```markdown
-school-mnger/
+```text
+school_management_system/
 ├── main.py
 ├── config.py
+├── requirements.txt
 ├── database/
 │   └── connection.py
 ├── models/
@@ -29,10 +30,13 @@ school-mnger/
 │   ├── teacher.py
 │   ├── course.py
 │   └── enrollment.py
-└── utils/
+├── utils/
+│   ├── __init__.py
+│   ├── validators.py
+│   └── helpers.py
+└── auth/
     ├── __init__.py
-    ├── validators.py
-    └── helpers.py
+    └── auth_manager.py
 ```
 
 ## Requirements
@@ -42,62 +46,80 @@ school-mnger/
 
 ### Python Dependencies
 
-`requirements.txt` is already included in the repository.
-
-To install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
+`requirements.txt` is included in the repository.
 
 ## Setup Instructions
 
-### 1. Clone or Download the Project
+### For Linux
 
-```bash
-git clone https://github.com/StonePhil/school-mnger
-cd school_management_system
-```
+1. **Clone or navigate to project folder:**
+   ```bash
+   cd ~/Desktop/school-mnger
+   ```
 
-### 2. Install Dependencies
+2. **Install MySQL/MariaDB Connector and bcrypt:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-pip install -r requirements.txt
-```
+3. **Start Database Server:**
+   ```bash
+   # On Fedora
+   sudo systemctl start mysqld
+   # OR on Ubuntu/Debian
+   sudo systemctl start mysql
+   ```
 
-### 3. Database Configuration
+4. **Run the Application:**
+   ```bash
+   python3 main.py
+   ```
 
-- Default credentials in `config.py`: `root` / `C0ventryCUC`
-- Make sure MariaDB/MySQL server is running:
+---
 
-```bash
-sudo systemctl start mysqld    # or mariadb on Fedora
-```
+### For Windows
 
-- Update `config.py` only if your username, password, or host is different.
+1. **Open Command Prompt or PowerShell** and navigate to project folder:
+   ```cmd
+   cd Desktop\school-mnger
+   ```
 
-### 4. Run the Application
+2. **Install dependencies:**
+   ```cmd
+   pip install -r requirements.txt
+   ```
 
-```bash
-python3 main.py
-```
+3. **Make sure MySQL Server is running** (usually starts automatically, or start via XAMPP / MySQL Workbench).
 
-The application will automatically:
-- Create the database `MY_SCHOOL_DATABASE` if it doesn't exist
-- Create all required tables with proper constraints
-- Start the interactive menu
+4. **Run the Application:**
+   ```cmd
+   python main.py
+   ```
+
+---
+
+## Default Login Credentials
+
+After first run, a default admin account is automatically created:
+
+- **Username:** `admin`
+- **Password:** `admin123`
+
+**Important:** Change the default password after first login for security.
 
 ## How to Use
 
-- Choose options from the main menu (1–5)
-- Navigate through sub-menus for **Students**, **Teachers**, **Courses**, and **Enrollments**
-- In **Student Management**, use option 4 to see **search** and **sorting** in action
-- Enter `5` in the main menu to exit
+1. Run the program → Login screen appears
+2. Login with credentials
+3. Use the main menu (options 1–7)
+4. **Admins** have full access
+5. **Teachers** have limited access
+6. Use option `6` to logout and login with another account
+7. Use option `7` to exit
 
 ## Notes
 
-- All user inputs are validated
-- Database changes are committed automatically on successful operations
-- Foreign key constraints ensure referential integrity
-
----
+- The system creates the database `MY_SCHOOL_DATABASE` and all tables automatically on first run.
+- All passwords are securely hashed using bcrypt.
+- Foreign key constraints maintain data integrity.
+- For Fedora users: Use `mariadb` or `mysqld` service name.
