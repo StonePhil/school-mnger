@@ -110,7 +110,7 @@ class DBConnection:
 
         # Auto-create default Admin account
         self._create_default_admin()
-        print("✅ All tables created successfully (including Users table).")
+        print("All tables created successfully (including Users table).")
 
     def _create_default_admin(self):
         """Creates default admin account if no users exist."""
@@ -123,7 +123,7 @@ class DBConnection:
                 ("admin", hashed)
             )
             self.connection.commit()
-            print("✅ Default admin account created → Username: admin | Password: admin123")
+            print("Default admin account created → Username: admin | Password: admin123")
 
     def execute_query(self, query: str, params: tuple = None):
         """Execute query with parameters and commit."""

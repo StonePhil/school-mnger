@@ -15,7 +15,7 @@ class SchoolManagementSystem:
         self.db = DBConnection()
         self.auth = AuthManager(self.db)
         self.current_user = None
-        print("✅ School Management System loaded successfully!\n")
+        print("School Management System loaded successfully!\n")
 
     def login(self):
         """Handle login before showing main menu."""
@@ -42,9 +42,9 @@ class SchoolManagementSystem:
                         "INSERT INTO Students (StudentName, Email, DateOfBirth) VALUES (%s, %s, %s)",
                         (name, email, dob)
                     )
-                    print("✅ Student added successfully!")
+                    print("Student added successfully!")
                 except Exception as e:
-                    print(f"❌ Error: {e}")
+                    print(f"Error: {e}")
 
             elif choice == "2":
                 sid = validate_positive_int("StudentID to update: ")
@@ -54,17 +54,17 @@ class SchoolManagementSystem:
                         "UPDATE Students SET StudentName = %s WHERE StudentID = %s",
                         (name, sid)
                     )
-                    print("✅ Student updated!")
+                    print("Student updated!")
                 except Exception as e:
-                    print(f"❌ Error: {e}")
+                    print(f"Error: {e}")
 
             elif choice == "3":
                 sid = validate_positive_int("StudentID to delete: ")
                 try:
                     self.db.execute_query("DELETE FROM Students WHERE StudentID = %s", (sid,))
-                    print("✅ Student deleted!")
+                    print("Student deleted!")
                 except Exception as e:
-                    print(f"❌ Error: {e}")
+                    print(f"Error: {e}")
 
             elif choice == "4":
                 records = self.db.fetch_all("SELECT StudentID, StudentName, Email, DateOfBirth FROM Students")
@@ -108,9 +108,9 @@ class SchoolManagementSystem:
                         "INSERT INTO Teachers (TeacherName, Email) VALUES (%s, %s)",
                         (name, email)
                     )
-                    print("✅ Teacher added!")
+                    print(" Teacher added!")
                 except Exception as e:
-                    print(f"❌ Error: {e}")
+                    print(f"Error: {e}")
 
             elif choice == "2":
                 tid = validate_positive_int("TeacherID: ")
@@ -120,17 +120,17 @@ class SchoolManagementSystem:
                         "UPDATE Teachers SET TeacherName = %s WHERE TeacherID = %s",
                         (name, tid)
                     )
-                    print("✅ Teacher updated!")
+                    print("Teacher updated!")
                 except Exception as e:
-                    print(f"❌ Error: {e}")
+                    print(f"Error: {e}")
 
             elif choice == "3":
                 tid = validate_positive_int("TeacherID to delete: ")
                 try:
                     self.db.execute_query("DELETE FROM Teachers WHERE TeacherID = %s", (tid,))
-                    print("✅ Teacher deleted!")
+                    print("Teacher deleted!")
                 except Exception as e:
-                    print(f"❌ Error: {e}")
+                    print(f"Error: {e}")
 
             elif choice == "4":
                 records = self.db.fetch_all("SELECT TeacherID, TeacherName, Email FROM Teachers")
@@ -163,9 +163,9 @@ class SchoolManagementSystem:
                         "INSERT INTO Courses (CourseName, CourseDetails, TeacherID) VALUES (%s, %s, %s)",
                         (name, details, teacher_id)
                     )
-                    print("✅ Course added!")
+                    print(" Course added!")
                 except Exception as e:
-                    print(f"❌ Error: {e}")
+                    print(f"Error: {e}")
 
             elif choice == "2":
                 cid = validate_positive_int("CourseID: ")
@@ -175,17 +175,17 @@ class SchoolManagementSystem:
                         "UPDATE Courses SET CourseName = %s WHERE CourseID = %s",
                         (name, cid)
                     )
-                    print("✅ Course updated!")
+                    print("Course updated!")
                 except Exception as e:
-                    print(f"❌ Error: {e}")
+                    print(f"Error: {e}")
 
             elif choice == "3":
                 cid = validate_positive_int("CourseID to delete: ")
                 try:
                     self.db.execute_query("DELETE FROM Courses WHERE CourseID = %s", (cid,))
-                    print("✅ Course deleted!")
+                    print("Course deleted!")
                 except Exception as e:
-                    print(f"❌ Error: {e}")
+                    print(f"Error: {e}")
 
             elif choice == "4":
                 records = self.db.fetch_all(
@@ -217,17 +217,17 @@ class SchoolManagementSystem:
                         "INSERT INTO Enrollments (StudentID, CourseID) VALUES (%s, %s)",
                         (sid, cid)
                     )
-                    print("✅ Student enrolled successfully!")
+                    print(" Student enrolled successfully!")
                 except Exception as e:
-                    print(f"❌ Enrollment failed: {e}")
+                    print(f"Enrollment failed: {e}")
 
             elif choice == "2":
                 eid = validate_positive_int("EnrollmentID to delete: ")
                 try:
                     self.db.execute_query("DELETE FROM Enrollments WHERE EnrollmentID = %s", (eid,))
-                    print("✅ Enrollment deleted!")
+                    print(" Enrollment deleted!")
                 except Exception as e:
-                    print(f"❌ Error: {e}")
+                    print(f"Error: {e}")
 
             elif choice == "3":
                 records = self.db.fetch_all("""
@@ -279,9 +279,9 @@ class SchoolManagementSystem:
             elif choice == "4":
                 self.manage_enrollments()
             elif choice == "5" and self.auth.is_admin(self.current_user):
-                print("👷 User management will be added in future phases.")
+                print("User management will be added in future phases.")
             elif choice == "6":
-                print("👋 Logged out successfully.")
+                print("Logged out successfully.")
                 if self.login():
                     continue
                 else:
@@ -290,7 +290,7 @@ class SchoolManagementSystem:
                 print("\nThank you for using the School Management System. Goodbye!")
                 break
             else:
-                print("❌ Invalid choice. Please try again.")
+                print("Invalid choice. Please try again.")
 
         self.db.close()
 
