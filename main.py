@@ -1,7 +1,4 @@
-# main.py
-"""
-Main entry point with Login + Authorization (Phase 1)
-"""
+#this code handles the login and authorization, and also serves as main menu of the program
 
 from database.connection import DBConnection
 from auth.auth_manager import AuthManager
@@ -15,17 +12,17 @@ class SchoolManagementSystem:
         self.db = DBConnection()
         self.auth = AuthManager(self.db)
         self.current_user = None
-        print("School Management System loaded successfully!\n")
+        print("-loading successful-\n")
 
     def login(self):
-        """Handle login before showing main menu."""
+        #login before showing the main menu
         self.current_user = self.auth.login()
         return self.current_user is not None
 
-    # ===================== STUDENT MANAGEMENT =====================
+    #student management
     def manage_students(self):
         while True:
-            print("\n=== Student Management ===")
+            print("\n- Student Management -")
             print("1. Add Student")
             print("2. Update Student")
             print("3. Delete Student")
@@ -59,6 +56,9 @@ class SchoolManagementSystem:
                     print(f"Error: {e}")
 
             elif choice == "3":
+                if not self.auth.can_delete(self.current_user):
+                    print("Permission denied. Only Admin can delete students.")
+                    continue
                 sid = validate_positive_int("StudentID to delete: ")
                 try:
                     self.db.execute_query("DELETE FROM Students WHERE StudentID = %s", (sid,))
@@ -71,12 +71,10 @@ class SchoolManagementSystem:
                 if not records:
                     print("No students found.")
                     continue
-
                 print("\nStudents sorted by name (Bubble Sort):")
                 sorted_records = bubble_sort(records, 1)
                 for row in sorted_records:
                     print(f"ID: {row[0]}, Name: {row[1]}, Email: {row[2] or 'N/A'}")
-
                 search = input("\nSearch by name (or press Enter to skip): ").strip()
                 if search:
                     results = linear_search(sorted_records, search, 1)
@@ -89,10 +87,10 @@ class SchoolManagementSystem:
             else:
                 print("Invalid choice. Try again.")
 
-    # ===================== TEACHER MANAGEMENT =====================
+    #teacher management
     def manage_teachers(self):
         while True:
-            print("\n=== Teacher Management ===")
+            print("\n- Teacher Management -")
             print("1. Add Teacher")
             print("2. Update Teacher")
             print("3. Delete Teacher")
@@ -108,7 +106,7 @@ class SchoolManagementSystem:
                         "INSERT INTO Teachers (TeacherName, Email) VALUES (%s, %s)",
                         (name, email)
                     )
-                    print(" Teacher added!")
+                    print("Teacher added!")
                 except Exception as e:
                     print(f"Error: {e}")
 
@@ -125,6 +123,9 @@ class SchoolManagementSystem:
                     print(f"Error: {e}")
 
             elif choice == "3":
+                if not self.auth.can_delete(self.current_user):
+                    print("Permission denied. Only Admin can delete teachers.")
+                    continue
                 tid = validate_positive_int("TeacherID to delete: ")
                 try:
                     self.db.execute_query("DELETE FROM Teachers WHERE TeacherID = %s", (tid,))
@@ -142,10 +143,10 @@ class SchoolManagementSystem:
             elif choice == "5":
                 break
 
-    # ===================== COURSE MANAGEMENT =====================
+    #course management
     def manage_courses(self):
         while True:
-            print("\n=== Course Management ===")
+            print("\n- Course Management -")
             print("1. Add Course")
             print("2. Update Course")
             print("3. Delete Course")
@@ -163,7 +164,7 @@ class SchoolManagementSystem:
                         "INSERT INTO Courses (CourseName, CourseDetails, TeacherID) VALUES (%s, %s, %s)",
                         (name, details, teacher_id)
                     )
-                    print(" Course added!")
+                    print("Course added!")
                 except Exception as e:
                     print(f"Error: {e}")
 
@@ -180,6 +181,9 @@ class SchoolManagementSystem:
                     print(f"Error: {e}")
 
             elif choice == "3":
+                if not self.auth.can_delete(self.current_user):
+                    print("Permission denied. Only Admin can delete courses.")
+                    continue
                 cid = validate_positive_int("CourseID to delete: ")
                 try:
                     self.db.execute_query("DELETE FROM Courses WHERE CourseID = %s", (cid,))
@@ -199,10 +203,10 @@ class SchoolManagementSystem:
             elif choice == "5":
                 break
 
-    # ===================== ENROLLMENT MANAGEMENT =====================
+    #enrollment management
     def manage_enrollments(self):
         while True:
-            print("\n=== Enrollment Management ===")
+            print("\n- Enrollment Management -")
             print("1. Enroll Student in Course")
             print("2. Delete Enrollment")
             print("3. View All Enrollments")
@@ -217,15 +221,18 @@ class SchoolManagementSystem:
                         "INSERT INTO Enrollments (StudentID, CourseID) VALUES (%s, %s)",
                         (sid, cid)
                     )
-                    print(" Student enrolled successfully!")
+                    print("Student enrolled successfully!")
                 except Exception as e:
                     print(f"Enrollment failed: {e}")
 
             elif choice == "2":
+                if not self.auth.can_delete(self.current_user):
+                    print("Permission denied. Only Admin can delete enrollments.")
+                    continue
                 eid = validate_positive_int("EnrollmentID to delete: ")
                 try:
                     self.db.execute_query("DELETE FROM Enrollments WHERE EnrollmentID = %s", (eid,))
-                    print(" Enrollment deleted!")
+                    print("Enrollment deleted!")
                 except Exception as e:
                     print(f"Error: {e}")
 
@@ -245,15 +252,15 @@ class SchoolManagementSystem:
                 break
 
     def run(self):
-        """Main program with login + role-based menu."""
+        #main part with login and roles inclusion
         if not self.login():
             self.db.close()
             sys.exit(1)
 
         while True:
-            print("\n" + "="*70)
-            print(f"🏫 SCHOOL MANAGEMENT SYSTEM - Logged in as: {self.current_user['username']} ({self.current_user['role']})")
-            print("="*70)
+            print("\n" + "-")
+            print(f"management system - logged in as: ({self.current_user['role']})")
+            print("-")
 
             print("1. Manage Students")
             print("2. Manage Teachers")
@@ -261,12 +268,14 @@ class SchoolManagementSystem:
             print("4. Manage Enrollments / Registrations")
 
             if self.auth.is_admin(self.current_user):
-                print("5. Manage Users (Admin Only - Coming Soon)")
+                print("5. Manage Users (Admin Only)")
+                print("6. Logout")
+                print("7. Exit Program")
             else:
-                print("5. [Teacher - Limited Access]")
+                print("5. Logout")
+                print("6. Exit Program")
 
-            print("6. Logout")
-            print("7. Exit Program")
+
 
             choice = input("\nEnter your choice (1-7): ").strip()
 
@@ -287,7 +296,7 @@ class SchoolManagementSystem:
                 else:
                     break
             elif choice == "7":
-                print("\nThank you for using the School Management System. Goodbye!")
+                print("\nExiting.")
                 break
             else:
                 print("Invalid choice. Please try again.")

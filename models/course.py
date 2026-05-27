@@ -1,5 +1,5 @@
 class Course:
-    #Course entity
+    #course entity
 
     def __init__(self, course_id=None, name="", details="", teacher_id=None, credits=3):
         self._course_id = course_id

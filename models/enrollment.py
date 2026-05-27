@@ -1,5 +1,5 @@
 class Enrollment:
-    """Enrollment between Student and Course."""
+    #enrollment between Student and Course
 
     def __init__(self, enrollment_id=None, student_id=0, course_id=0, registration_date=None):
         self._enrollment_id = enrollment_id

@@ -2,7 +2,7 @@ from models.person import Person
 
 
 class Student(Person):
-    #Student model with inheritance
+    #student model
 
     def __init__(self, student_id=None, name="", email=None, date_of_birth=None):
         super().__init__(student_id, name, email)

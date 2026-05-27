@@ -113,9 +113,8 @@ After first run, a default admin account is automatically created:
 2. Login with credentials
 3. Use the main menu (options 1–7)
 4. **Admins** have full access
-5. **Teachers** have limited access
-6. Use option `6` to logout and login with another account
-7. Use option `7` to exit
+5. Use option `6` to logout and login with another account
+6. Use option `7` to exit
 
 ## Notes
 
